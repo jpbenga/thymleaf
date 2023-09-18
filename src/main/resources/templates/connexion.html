@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/style/theme1.css}">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/style/formulaire.css}" th:fragment="custom-styles">
+</head>
+<body>
+	<div th:replace="navbar :: navbarFragment"></div>
+
+	<section class="vh-100" style="background-color: #eee;">
+		<div class="container h-100">
+			<div class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col-12 col-md-10 col-lg-9 col-xl-11">
+					<div class="card text-black" style="border-radius: 25px;">
+						<div class="card-body p-md-5">
+							<div class="row justify-content-center">
+								<div class="col-12 col-md-10 col-lg-6">
+									<form th:action="@{/connexion}" method="post">
+										<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Connexion</p>
+										<div class="mb-4">
+											<label class="form-label" for="username">Email</label>
+											<div class="d-flex flex-row align-items-center">
+												<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+												<input type="text" id="username" name="username" class="form-control"
+													placeholder="Email" required />
+											</div>
+										</div>
+										<div class="mb-4">
+											<label class="form-label" for="password">Mot de passe</label>
+											<div class="d-flex flex-row align-items-center">
+												<i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+												<input type="password" id="password" name="password"
+													class="form-control" placeholder="Mot de passe" required />
+											</div>
+										</div>
+										<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+											<button type="submit" class="btn btn-primary btn-lg">Connexion</button>
+										</div>
+										<div class="additional-info text-center">
+											<p>Si vous n'avez pas de compte, pour vous inscrire c'est par <a
+													th:href="@{/inscription}" class="rounded-pill info-link">ici</a>.
+											</p>
+										</div>
+									</form>
+								</div>
+								<div class="col-12 col-md-10 col-lg-6 d-lg-flex align-items-center order-1 order-lg-2">
+									<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+										class="img-fluid" alt="Sample image">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+	<div th:replace="footer :: footerFragment"></div>
+</body>
+
+</html>

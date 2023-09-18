@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:fragment="title">Erreur 404</title>
+	<link rel="stylesheet" th:href="@{/style/erreur.css}" th:fragment="custom-styles">
+	<meta http-equiv="refresh" content="5;url=/">
+</head>
+
+<body>
+	<section class="page_404">
+		<div class="container">
+			<div style="text-align: center; font-size: x-large;">
+				<h1 th:text="'Oups ! Une erreur ' + ${codeRetour} + ' s\'est produite.'">Oups ! Une erreur s'est
+					produite.</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 ">
+					<div class="col-sm-10 col-sm-offset-1 text-center">
+						<div class="four_zero_four_bg">
+						</div>
+						<div class="contant_box_404" style="text-align: center; padding: 50px;">
+							<h3 class="h2">
+								Nous vous redirigeons vers la page d'accueil dans quelques secondes...
+							</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script th:inline="javascript">
+		setTimeout(function () {
+			window.location.href = '/';
+		}, 5000);
+	</script>
+
+</body>
+
+</html>

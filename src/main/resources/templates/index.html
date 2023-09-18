@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:fragment="title">Calendrier Gif</title>
+	<link rel="stylesheet" th:href="@{/style/theme1.css}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div th:replace="navbar :: navbarFragment"></div>
+	<div class="container">
+		<h1 class="mt-4 mb-4">Calendrier Gif</h1>
+
+		<div th:if="${param.notification != null}" class="alert alert-info">
+			<h2 th:text="${param.notification}"></h2>
+		</div>
+
+		<h2 class="mt-4 mb-3">Utilisateurs ayant réagi au moins 5 fois</h2>
+		<div class="card mb-4">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" th:each="utilisateur : ${utilisateurs}" th:text="${utilisateur.prenom}">
+				</li>
+			</ul>
+		</div>
+
+		<h2 class="mt-4 mb-3">Nb d'inscrits par année et par mois</h2>
+		<div class="card mb-4">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" th:each="nbInscrit : ${nbInscrits}"
+					th:text="${nbInscrit.annee} + '/' + ${nbInscrit.mois} + ' : ' + ${nbInscrit.nbInscrits}"></li>
+			</ul>
+		</div>
+
+		<div class="card mb-4">
+			<div class="card-body">
+				Nombre d'inscrits : <span th:text="${nbTotalInscrits}"></span>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+	<div th:replace="footer :: footerFragment"></div>
+</body>
+
+</html>

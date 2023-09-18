@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Calendrier</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="path/to/emoji-picker-library.js"></script>
+	<link rel="stylesheet" href="path/to/emoji-picker-styles.css">
+</head>
+
+<body>
+
+	<div th:replace="navbar :: navbarFragment"></div>
+
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8 bg-white p-5 rounded shadow">
+				<h1 class="display-4 text-center my-5">Calendrier</h1>
+				<div class="d-flex justify-content-between align-items-center">
+					<h2>
+						Utilisateur : <span th:text="${session.utilisateur.prenom}"></span> - Solde : <span
+							th:text="${session.utilisateur.nbPoints}" class="text-success"></span> points
+					</h2>
+					<a href="calendrier/deconnexion" class="btn btn-danger btn-sm">Déconnexion</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-4">
+		<div class="row">
+			<div class="col-md-4 mb-4" th:each="jour : ${pageDeJours.content}">
+				<div class="card">
+					<div class="card-header bg-primary text-white">
+						<h5 th:text="${jour}"></h5>
+					</div>
+					<div class="card-body">
+						<p class="card-text">
+							<span class="badge badge-success" th:text="${jour.nbPoints}"></span> points
+						</p>
+						<div th:if="${jour.gif eq null}">
+							<a th:href="'calendrier/placerGifDistant?ID_JOUR=' + ${jour.date}"
+								class="btn btn-outline-info btn-sm">Placer un Gif distant</a>
+							<a th:href="'calendrier/televerserGif?ID_JOUR=' + ${jour.date}"
+								class="btn btn-outline-success btn-sm">Téléverser un Gif</a>
+						</div>
+						<div th:if="${jour.gif ne null}">
+							<p th:if="${jour.gif.legende ne null}" th:text="${jour.gif.legende}"></p>
+							<img th:if="${jour.gif.getClass().simpleName eq 'GifDistant'}" th:src="${jour.gif.url}"
+								height="200" class="img-fluid">
+							<img th:if="${jour.gif.getClass().simpleName eq 'GifTeleverse'}"
+								th:src="'/images/' + ${jour.gif.id} + '.gif'" height="200" class="img-fluid">
+						</div>
+					</div>
+					
+					<div class="card-footer text-muted">
+						<span th:if="${jour.gif ne null}" th:text="${jour.gif.utilisateur.prenom}"></span>
+						<div th:if="${jour.gif ne null}">
+							<span th:each="reaction : ${jour.gif.reactions}"
+								th:text="${reaction.emotion.code} + ' ' + ${reaction.utilisateur.prenom}"></span>
+							<button class="btn btn-outline-secondary btn-sm float-right reagir-btn"
+								data-gif-id="${jour.gif.id}">
+								<i class="fas fa-thumbs-up"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-12">
+				<nav aria-label="Page navigation">
+					<ul class="pagination">
+						<li class="page-item" th:if="${!pageDeJours.first}">
+							<a class="page-link" th:href="'calendrier?page=0&sort=' + ${sort}"
+								aria-label="Premier">&#x23EE;</a>
+						</li>
+						<li class="page-item" th:if="${!pageDeJours.first}">
+							<a class="page-link"
+								th:href="'calendrier?page=' + ${pageDeJours.number-1} + '&sort=date'"
+								aria-label="Précédent">&#x23EA;</a>
+						</li>
+						<li class="page-item disabled">
+							<span class="page-link">Page <span th:text="${pageDeJours.number+1}"></span> : Jour <span
+									th:text="${pageDeJours.totalElements == 0 ? 0 : pageDeJours.size * pageDeJours.number+1}"></span>
+								à <span
+									th:text="${pageDeJours.numberOfElements + (pageDeJours.size * pageDeJours.number)}"></span>
+								sur <span th:text="${pageDeJours.totalElements}"></span> Jours</span>
+						</li>
+						<li class="page-item" th:if="${!pageDeJours.last}">
+							<a class="page-link"
+								th:href="'calendrier?page=' + ${pageDeJours.number+1} + '&sort=date'"
+								aria-label="Suivant">&#x23E9;</a>
+						</li>
+						<li class="page-item" th:if="${!pageDeJours.last}">
+							<a class="page-link"
+								th:href="'calendrier?page=' + ${pageDeJours.totalPages - 1} + '&sort=date'"
+								aria-label="Dernier">&#x23ED;</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<div class="row p-3">
+			<div class="col-md-12">
+				<a th:href="'calendrierExport?jours=' + ${pageDeJours.number}" class="btn btn-primary">
+					<i class="fas fa-file-pdf"></i> Exporter PDF
+				</a>
+			</div>
+		</div>
+	</div>
+	<div th:replace="footer :: footerFragment"></div>
+	<script th:src="@{/js/calendrier.js}"></script>
+	<emoji-picker id="emoji-picker" style="position: absolute; display: none;"></emoji-picker>
